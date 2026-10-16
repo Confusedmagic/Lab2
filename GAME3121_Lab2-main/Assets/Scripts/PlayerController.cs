@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip wallSound;   // boundary wall hit
     public AudioClip winSound;    // played once on win
     public AudioClip deathSound;  // played when destroyed by enemy
+    public AudioClip pickupSound;
     private bool hasWon = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -37,15 +38,22 @@ public class PlayerController : MonoBehaviour
         Vector3 movementVector = new Vector3(movementX, 0.0f, movementY);
         rb.AddForce(movementVector * speed);
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("PickUp"))
         {
+            // Play pickup sound
+            PlaySound(pickupSound);
+
+            // Collect pickup
             other.gameObject.SetActive(false);
+
             count++;
             SetCountText();
         }
     }
+
     void SetCountText()
     {
         countText.text = "Count: " +count.ToString();
